@@ -1,0 +1,72 @@
+const nodes = ref<Node[]>([
+  createNode('Sidang Seminar Hasil', 500, 0, '1', { type: 'task' }),
+  createNode('Revisi Skripsi', 500, 100, '2', { type: 'task' }),
+  createNode('TTD Lembar Pengesahan', 500, 200, '3', {
+    type: 'task',
+    data: {
+      description: 'Lembar Pengesahan Skripsi ini digunakan untuk buku skripsi cetak nanti, jadi pastikan benar',
+      notes: [
+        { text: 'Pastikan di tanda tangan sebelah kanan untuk kaprodi bertuliskan "Koordinator Program Studi S1 Teknik Informatika"' }
+      ] as TaskDataNote[],
+    },
+  }),
+
+  createNode('Test Tep Dan Lulus Score >425', 500, 400, '5', { type: 'task' }),
+  createNode('Membuat Artikel', 750, 400, '6'),
+
+  // 4p
+  createNode('Berhubungan Dengan Pengesahan', 0, 500, '4p', {
+    style: { backgroundColor: 'rgba(16, 185, 129, 0.5)', width: '450px', height: '850px' },
+  }),
+  createNode('Minta Ttd Lembar Pengesahan Ke Dekan Di Tu', 150, 65, '4p1', { type: 'task', extent: 'parent', parentNode: '4p' }),
+  // 41 / Simontasi Tahap 4
+  createNode('Mengisi Simontasi Tahap 4', 50, 200, '411', { type: 'task', extent: 'parent', parentNode: '4p' }),
+  createNode('Validasi Simontasi Ke Kaprodi / Dosbim / Mas Haris Tu', 50, 300, '412', { type: 'task', extent: 'parent', parentNode: '4p' }),
+  createNode('Minta Input Nilai Ke Dosen Penguji & Pembimbing', 50, 400, '413', { type: 'task', extent: 'parent', parentNode: '4p' }),
+  createNode('Minta Sinkron Nilai Skripsi Simontasi Ke Kaprodi Agar Sinkron Ke Siakad', 50, 500, '414', { type: 'task', extent: 'parent', parentNode: '4p' }),
+  createNode('Sinkronisasi Pembimbing Agar Masuk Ke Digilib Di Simontasi Tahap 1', 50, 600, '415', { type: 'task', extent: 'parent', parentNode: '4p' }),
+  createNode('Tahap Ini Memastikan Nilai Skripsi Kita Muncul Di Siakad', 50, 700, '416', { type: 'task', extent: 'parent', parentNode: '4p' }),
+  // 42 / Fk
+  createNode('Foto Kopi 5 Lembar Lalu Minta Stempel Ke Tu', 250, 200, '421', { type: 'task', extent: 'parent', parentNode: '4p' }),
+  createNode('Tahap Ini Memastikan Mendapatkan 5 Lembar Dan Terstempel Basah Untuk Tahap Selanjutnya', 250, 300, '422', { type: 'task', extent: 'parent', parentNode: '4p' }),
+])
+const edges = ref<Edge[]>([
+  { id: 'e1-2', source: '1', target: '2', markerEnd: 'arrowclosed' },
+  { id: 'e2-3', source: '2', target: '3', markerEnd: 'arrowclosed' },
+  { id: 'e4-5', source: '3', target: '4p', markerEnd: 'arrowclosed' },
+  { id: 'e5-6', source: '3', target: '5', markerEnd: 'arrowclosed' },
+  { id: 'e6-7', source: '3', target: '6', markerEnd: 'arrowclosed' },
+
+  { id: 'e4p1-411', source: '4p1', target: '411', markerEnd: 'arrowclosed' },
+  { id: 'e4p1-421', source: '4p1', target: '421', markerEnd: 'arrowclosed' },
+  { id: 'e41-42', source: '4', target: '411', markerEnd: 'arrowclosed' },
+  { id: 'e42-43', source: '411', target: '412', markerEnd: 'arrowclosed' },
+  { id: 'e43-44', source: '412', target: '413', markerEnd: 'arrowclosed' },
+  { id: 'e44-45', source: '413', target: '414', markerEnd: 'arrowclosed' },
+  { id: 'e45-46', source: '414', target: '415', markerEnd: 'arrowclosed' },
+  { id: 'e46-47', source: '415', target: '416', markerEnd: 'arrowclosed' },
+
+  { id: 'e41-42', source: '4', target: '421', markerEnd: 'arrowclosed' },
+  { id: 'e42-43', source: '421', target: '422', markerEnd: 'arrowclosed' },
+])
+
+const a = computed(() => {
+  // in nodes, only properti "id, label, position, class, data, type, extent, parentNode, style"
+  let res = {
+    nodes: nodes.value.map(n => {
+      return {
+        id: n.id,
+        label: n.label,
+        position: n.position,
+        class: n.class,
+        data: n.data,
+        type: n.type,
+        extent: n.extent,
+        parentNode: n.parentNode,
+        style: n.style,
+      }
+    }),
+    edges: edges.value,
+  }
+  return res
+})
